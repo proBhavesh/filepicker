@@ -12,9 +12,8 @@ const Gdrive = () => {
 	// const customViewsArray = [new google.picker.DocsView()]; // custom view
 	const handleOpenPicker = async () => {
 		openPicker({
-			clientId:
-				"928744329239-3vqekea7g0pt94varbkqqpufcqnmaf0t.apps.googleusercontent.com",
-			developerKey: "AIzaSyAKJFEd61mxUV9-a9INy3Ndp_bv109hpU0",
+			clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+			developerKey: process.env.NEXT_PUBLIC_GOOGLE_DEVELOPER_KEY,
 			viewId: "DOCS",
 			// token: token, // pass oauth token in case you already have one
 			showUploadView: true,

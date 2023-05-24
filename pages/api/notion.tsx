@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   cors()(req, res, () => {
     try {
       const notion = new Client({
-        auth: "secret_x8HI3hRJByN6cL35lpbrcrbirNC51L7QHx2rYRMoYrX",
+        auth: process.env.NEXT_PUBLIC_NOTION_SECRET_KEY,
       });
       (async () => {
         const listUsersResponse = await notion.users.list({});

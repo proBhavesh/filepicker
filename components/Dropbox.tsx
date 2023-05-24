@@ -14,7 +14,7 @@ const Dropbox = () => {
 	return (
 		<div className="flex flex-col items-center justify-center h-auto">
 			<DropboxChooser
-				appKey={"yycsg61lr0b2nuc"}
+				appKey={process.env.NEXT_PUBLIC_DROPBOX_API_KEY}
 				success={(files) => console.log("chose:", files)}
 				cancel={() => console.log("closed")}
 				multiselect={true}
