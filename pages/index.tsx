@@ -11,7 +11,7 @@ const MyComponent: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <Dropbox />
       <Gdrive />
       <Notion />
