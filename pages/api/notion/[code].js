@@ -1,5 +1,7 @@
 import axios from "axios";
 import cors from "cors";
+import fs from "fs";
+import path from "path";
 
 // The OAuth client ID from the integration page!
 const notionClientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
@@ -21,9 +23,22 @@ export default async function handler(req, res) {
         data: { code, grant_type: "authorization_code" },
       });
 
-      // You want to save resp.data.workspace_id and resp.data.access_token if you want to make requests later with this Notion account (otherwise they'll need to reauthenticate)
+      const writeCodeToFile = async () => {
+        const filePath = path.join(process.cwd(), "data", "code.txt");
+        // Convert the data to JSON format
+        const jsonData = await resp.data.access_token;
 
-      // Use the access token we just got to search the user's workspace for databases
+        // Write the JSON data to the file
+        await fs.writeFile(filePath, jsonData, "utf8", (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      };
+
+      await writeCodeToFile();
+
+      // const userPages = async () => {
       const { data } = await axios({
         method: "POST",
         url: "https://api.notion.com/v1/search",
@@ -35,20 +50,11 @@ export default async function handler(req, res) {
         data: { filter: { property: "object", value: "page" } },
       });
 
-      // const { data } = await axios({
-      //   method: "POST",
-      //   url: "https://api.notion.com/v1/search",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${resp.data.access_token}`,
-      //     "Notion-Version": "2022-06-28",
-      //   },
-      //   data: { filter: { property: "object", value: "page" } },
-      // });
-
       const title = await data.results[0].properties.title.title.plain_text;
       const content = await data.results[0];
-      console.log("Properties this is", await content);
+
+      // Use the access token we just got to search the user's workspace for databases
+
       res.json(data?.results);
     } else {
       res.status(405).end();
