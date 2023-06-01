@@ -16,9 +16,11 @@ function App() {
     const params = new URL(window.document.location).searchParams;
     code = params.get("code");
     if (!code) return;
-    fetch(`http://localhost:5000/api/notion/${code}`).then(async (resp) => {
-      setdbs(await resp.json());
-    });
+    fetch(`https://filepicker-sigma.vercel.app/api/notion/${code}`).then(
+      async (resp) => {
+        setdbs(await resp.json());
+      }
+    );
     // console.log(code);
   }, []);
 
